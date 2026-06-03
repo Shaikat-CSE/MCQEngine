@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "MCQ Finder — AI-Powered MCQ Search",
+  title: "Codemy MCQ Bank — AI-Powered MCQ Search",
   description: "Find answers instantly from your course question banks using advanced fuzzy matching.",
 };
 

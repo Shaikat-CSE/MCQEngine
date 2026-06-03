@@ -5,7 +5,7 @@ from pydantic_settings import BaseSettings
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 class Settings(BaseSettings):
-    PROJECT_NAME: str = "MCQ Finder API"
+    PROJECT_NAME: str = "Codemy MCQ Bank API"
     DATABASE_URL: str = os.getenv("DATABASE_URL", f"sqlite:///{os.path.join(BASE_DIR, 'mcq_finder.db')}")
     DATA_DIR: str = os.getenv("DATA_DIR", os.path.join(BASE_DIR, "data"))
     HOST: str = "127.0.0.1"

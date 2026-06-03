@@ -85,12 +85,16 @@ export default function SubjectsPage() {
             <motion.div 
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
-              className="w-9 h-9 md:w-10 md:h-10 rounded-xl bg-gradient-to-tr from-orange-groq to-amber-500 flex items-center justify-center shadow-md shadow-orange-groq/20 border border-orange-500/20"
+              className="relative w-9 h-9 md:w-10 md:h-10 transition-transform"
             >
-              <Sparkles className="w-4 h-4 md:w-4.5 md:h-4.5 text-white" />
+              <img 
+                src="/codemy-logo-light.png" 
+                alt="Codemy Technologies Logo" 
+                className="w-full h-full object-contain"
+              />
             </motion.div>
             <span className="font-outfit font-extrabold text-lg md:text-2xl tracking-tight bg-gradient-to-r from-zinc-900 to-zinc-600 bg-clip-text text-transparent">
-              MCQ <span className="text-orange-groq font-black">Finder</span>
+              Codemy <span className="text-orange-groq font-black">MCQ Bank</span>
             </span>
           </Link>
 
@@ -286,7 +290,7 @@ export default function SubjectsPage() {
             <span>Protip: Select any subject question bank to start practicing and testing your knowledge.</span>
           </p>
           <p className="mt-2 text-zinc-500 font-inter text-[10px] font-medium flex items-center justify-center gap-1 select-none">
-            <span>MCQ Finder Engine © 2026. Developed by</span>
+            <span>Codemy MCQ Bank © 2026. Developed by</span>
             <a 
               href="https://codemybd.com" 
               target="_blank" 

@@ -103,7 +103,7 @@ class SubjectResponse(BaseModel):
 # API Endpoints
 @app.get("/")
 def read_root():
-    return {"message": "Welcome to premium MCQ Finder API", "version": "1.0.0"}
+    return {"message": "Welcome to premium Codemy MCQ Bank API", "version": "1.0.0"}
 
 @app.get("/api/subjects", response_model=List[SubjectResponse])
 def get_subjects(db: Session = Depends(get_db)):
