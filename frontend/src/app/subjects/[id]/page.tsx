@@ -59,6 +59,11 @@ const API_BASE = typeof process.env.NEXT_PUBLIC_API_URL !== "undefined"
   ? process.env.NEXT_PUBLIC_API_URL 
   : "http://127.0.0.1:8000";
 
+const formatFileName = (fileName: string) => {
+  const nameWithoutExt = fileName.replace(/\.[^/.]+$/, "");
+  return nameWithoutExt.replace(/[_-]/g, " ");
+};
+
 export default function SubjectDetailPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = use(params);
   
@@ -379,8 +384,8 @@ export default function SubjectDetailPage({ params }: { params: Promise<{ id: st
                       {totalMcqs} matching criteria
                     </span>
                   )}
-                  <span className="font-mono text-[10px] select-all uppercase">
-                    File: {subject.file_name}
+                  <span className="font-inter text-[10px] select-all text-zinc-400 bg-zinc-100/50 px-2.5 py-0.5 rounded-md font-medium">
+                    Source: {formatFileName(subject.file_name)}
                   </span>
                 </div>
               </motion.div>
@@ -640,7 +645,7 @@ export default function SubjectDetailPage({ params }: { params: Promise<{ id: st
                       </div>
 
                       {/* Question Text */}
-                      <p className="text-zinc-900 font-bold text-md leading-relaxed mb-6 font-outfit select-text">
+                      <p className="text-zinc-900 font-bold text-sm md:text-base leading-relaxed mb-6 font-outfit select-text">
                         {mcq.question}
                       </p>
 
@@ -666,7 +671,7 @@ export default function SubjectDetailPage({ params }: { params: Promise<{ id: st
                               labelStyle = "bg-orange-groq text-white border-orange-groq shadow-md shadow-orange-groq/20";
                               showCheck = true;
                             } else {
-                              optionStyle = "bg-zinc-50/40 border-zinc-200/50 text-zinc-600 opacity-60";
+                              optionStyle = "bg-zinc-50/40 border-zinc-200/50 text-zinc-500";
                             }
                           } else {
                             // Practice Mode logic
@@ -685,7 +690,7 @@ export default function SubjectDetailPage({ params }: { params: Promise<{ id: st
                                 labelStyle = "bg-red-500 text-white border-red-500";
                                 showCross = true;
                               } else {
-                                optionStyle = "bg-zinc-50/40 border-zinc-200/50 text-zinc-600 opacity-50";
+                                optionStyle = "bg-zinc-50/40 border-zinc-200/50 text-zinc-500";
                               }
                             } else {
                               // Unanswered clickable states
@@ -777,7 +782,7 @@ export default function SubjectDetailPage({ params }: { params: Promise<{ id: st
 
         {/* Footer help guide */}
         <div className="w-full max-w-xl mx-auto text-center mt-20 text-[11px] text-zinc-400 select-none font-outfit font-semibold">
-          <p className="flex items-center justify-center gap-1.5">
+          <p className="hidden md:flex items-center justify-center gap-1.5">
             <HelpCircle className="w-3.5 h-3.5 text-zinc-400" /> 
             <span>Protip: Press <kbd className="keycap px-1.5 py-0.5 rounded text-[9px] text-zinc-600 font-bold select-none">/</kbd> to search or <kbd className="keycap px-1.5 py-0.5 rounded text-[9px] text-zinc-600 font-bold select-none">Esc</kbd> to exit.</span>
           </p>

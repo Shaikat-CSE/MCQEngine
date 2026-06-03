@@ -29,6 +29,11 @@ const API_BASE = typeof process.env.NEXT_PUBLIC_API_URL !== "undefined"
   ? process.env.NEXT_PUBLIC_API_URL 
   : "http://127.0.0.1:8000";
 
+const formatFileName = (fileName: string) => {
+  const nameWithoutExt = fileName.replace(/\.[^/.]+$/, "");
+  return nameWithoutExt.replace(/[_-]/g, " ");
+};
+
 export default function SubjectsPage() {
   const [subjects, setSubjects] = useState<Subject[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -250,10 +255,10 @@ export default function SubjectsPage() {
                         {sub.name}
                       </h3>
 
-                      <div className="flex items-center gap-1.5 text-zinc-400 text-xs mb-6 select-all font-mono">
-                        <FileText className="w-3.5 h-3.5" />
-                        <span className="truncate max-w-[280px]" title={sub.file_name}>
-                          {sub.file_name}
+                      <div className="flex items-center gap-1.5 text-zinc-500 text-xs mb-6 select-all font-inter">
+                        <FileText className="w-3.5 h-3.5 text-orange-groq/60" />
+                        <span className="truncate max-w-[280px] font-medium" title={sub.file_name}>
+                          {formatFileName(sub.file_name)}
                         </span>
                       </div>
                     </div>

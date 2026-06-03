@@ -50,6 +50,11 @@ const API_BASE = typeof process.env.NEXT_PUBLIC_API_URL !== "undefined"
   ? process.env.NEXT_PUBLIC_API_URL 
   : "http://127.0.0.1:8000";
 
+const formatFileName = (fileName: string) => {
+  const nameWithoutExt = fileName.replace(/\.[^/.]+$/, "");
+  return nameWithoutExt.replace(/[_-]/g, " ");
+};
+
 export default function Home() {
   // State
   const [subjects, setSubjects] = useState<Subject[]>([]);
@@ -346,10 +351,10 @@ export default function Home() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
           >
-            <h1 className="font-outfit text-5xl md:text-6xl font-black tracking-tight bg-gradient-to-b from-zinc-950 to-zinc-600 bg-clip-text text-transparent mb-3.5 leading-none">
+            <h1 className="font-outfit text-4xl md:text-6xl font-black tracking-tight bg-gradient-to-b from-zinc-950 to-zinc-600 bg-clip-text text-transparent mb-3.5 leading-none">
               Codemy MCQ Bank
             </h1>
-            <p className="text-zinc-500 font-inter text-md md:text-lg font-medium max-w-md mx-auto">
+            <p className="text-zinc-500 font-inter text-sm md:text-base font-medium max-w-md mx-auto">
               Locate questions & correct answers instantly from your subject question banks.
             </p>
           </motion.div>
@@ -378,7 +383,7 @@ export default function Home() {
               </div>
               <div>
                 <span className="block text-[10px] text-zinc-400 font-bold uppercase tracking-wider font-outfit">ACTIVE QUESTION BANK</span>
-                <span className="text-zinc-900 font-bold font-outfit text-md">
+                <span className="text-zinc-900 font-bold font-outfit text-sm md:text-base">
                   {selectedSubject ? selectedSubject.name : "Choose a subject..."}
                 </span>
               </div>
@@ -485,7 +490,7 @@ export default function Home() {
                   <X className="w-4 h-4" />
                 </button>
               ) : (
-                <span className="keycap px-2 py-0.5 rounded text-[9px] text-zinc-400 font-bold select-none">
+                <span className="keycap px-2 py-0.5 rounded text-[9px] text-zinc-400 font-bold select-none hidden md:inline-block">
                   /
                 </span>
               )}
@@ -609,7 +614,8 @@ export default function Home() {
                   Paste or type a question to perform deep fuzzy matching against database records.
                 </p>
                 <div className="text-xs text-zinc-500 border border-zinc-200/80 px-3.5 py-2 rounded-xl bg-zinc-50/50 font-medium font-outfit flex items-center gap-1.5 select-none shadow-inner">
-                  Press <kbd className="keycap px-1.5 py-0.5 rounded font-mono font-bold text-zinc-600">/</kbd> to focus search bar
+                  <span className="md:hidden">Tap the search bar to start searching</span>
+                  <span className="hidden md:inline">Press <kbd className="keycap px-1.5 py-0.5 rounded font-mono font-bold text-zinc-600">/</kbd> to focus search bar</span>
                 </div>
               </motion.div>
             )}
@@ -715,7 +721,7 @@ export default function Home() {
                       </div>
 
                       {/* Question Body */}
-                      <p className="text-zinc-900 font-bold text-md leading-relaxed mb-6 font-outfit select-text">
+                      <p className="text-zinc-900 font-bold text-sm md:text-base leading-relaxed mb-6 font-outfit select-text">
                         {mcq.question}
                       </p>
 
@@ -735,7 +741,7 @@ export default function Home() {
                               className={`flex items-start gap-3.5 p-4 rounded-2xl border text-sm transition-all duration-300 select-text ${
                                 isCorrect
                                   ? "bg-orange-groq/5 border-orange-groq/30 text-orange-groq font-bold shadow-sm shadow-orange-500/5"
-                                  : "bg-zinc-50/40 border-zinc-200/50 text-zinc-600 opacity-60 hover:opacity-85"
+                                  : "bg-zinc-50/40 border-zinc-200/50 text-zinc-500 hover:text-zinc-700 hover:border-zinc-300"
                               }`}
                             >
                               {/* Option Badge */}
@@ -785,7 +791,7 @@ export default function Home() {
 
         {/* Footer help guide */}
         <div className="w-full max-w-xl text-center mt-20 text-[11px] text-zinc-400 select-none font-outfit font-semibold">
-          <p className="flex items-center justify-center gap-1.5">
+          <p className="hidden md:flex items-center justify-center gap-1.5">
             <HelpCircle className="w-3.5 h-3.5 text-zinc-400" /> 
             <span>Protip: Press <kbd className="keycap px-1.5 py-0.5 rounded text-[9px] text-zinc-600 font-bold select-none">/</kbd> to search or <kbd className="keycap px-1.5 py-0.5 rounded text-[9px] text-zinc-600 font-bold select-none">Esc</kbd> to exit.</span>
           </p>
