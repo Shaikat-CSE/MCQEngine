@@ -76,6 +76,13 @@ success "Code updated to commit: $(git rev-parse --short HEAD)"
 # Step 3: Update Backend Virtual Env and Dependencies
 log "Step 3/8: Updating Python backend packages..."
 cd "$PROJECT_DIR/backend"
+
+# Ensure python3-venv and python3-pip are installed
+if ! dpkg -s python3-venv &>/dev/null; then
+    log "python3-venv is missing on system. Installing it..."
+    apt-get update && apt-get install -y python3-venv python3-pip
+fi
+
 if [ ! -d "venv" ]; then
     log "Creating virtual environment..."
     python3 -m venv venv
