@@ -156,8 +156,10 @@ success "Next.js frontend running on port 3010"
 # Step 7: Verify Nginx Routing & Reload
 log "Step 7/8: Verifying Nginx configuration..."
 NGINX_CONF="/etc/nginx/sites-available/mcq.codemybd.com"
-if [ ! -f "$NGINX_CONF" ]; then
-    log "Creating new Nginx site configuration for mcq.codemybd.com..."
+SSL_CERT="/etc/letsencrypt/live/mcq.codemybd.com/fullchain.pem"
+
+if [ -f "$SSL_CERT" ]; then
+    log "SSL Certificate found. Generating full Nginx SSL configuration..."
     cat > "$NGINX_CONF" << 'EOF'
 server {
     listen 80;
@@ -225,13 +227,51 @@ server {
     }
 }
 EOF
+else
+    warn "SSL Certificate NOT found. Generating HTTP-only Nginx configuration for verification..."
+    cat > "$NGINX_CONF" << 'EOF'
+server {
+    listen 80;
+    listen [::]:80;
+    server_name mcq.codemybd.com;
+
+    location /.well-known/acme-challenge/ {
+        root /var/www/certbot;
+    }
+
+    # Route /api/ to FastAPI Backend
+    location /api/ {
+        proxy_pass http://127.0.0.1:8010;
+        proxy_http_version 1.1;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    }
+
+    # Route Web Pages
+    location / {
+        proxy_pass http://127.0.0.1:3010;
+        proxy_http_version 1.1;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection "upgrade";
+    }
+}
+EOF
+fi
+
+# Enable site if not already enabled
+if [ ! -L /etc/nginx/sites-enabled/mcq.codemybd.com ]; then
+    log "Enabling Nginx site configuration..."
     ln -sf "$NGINX_CONF" /etc/nginx/sites-enabled/
 fi
 
 # Reload Nginx
 nginx -t
 systemctl reload nginx
-success "Nginx reloaded successfully"
+success "Nginx config updated and reloaded"
 
 # Step 8: Perform Health Checks
 log "Step 8/8: Finalizing health checks..."
