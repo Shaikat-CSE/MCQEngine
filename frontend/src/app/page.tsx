@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect, useRef } from "react";
+import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 import { 
   Search, 
@@ -264,17 +265,34 @@ export default function Home() {
 
       {/* Top Header Navigation */}
       <header className="w-full py-5 px-8 flex justify-between items-center max-w-7xl mx-auto border-b border-zinc-200/60 backdrop-blur-md sticky top-0 z-40 bg-[#fafafa]/80 transition-all duration-300">
-        <div className="flex items-center space-x-3 cursor-pointer group">
-          <motion.div 
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            className="w-10 h-10 rounded-xl bg-gradient-to-tr from-orange-groq to-amber-500 flex items-center justify-center shadow-md shadow-orange-groq/20 border border-orange-500/20"
-          >
-            <Sparkles className="w-4.5 h-4.5 text-white animate-pulse" />
-          </motion.div>
-          <span className="font-outfit font-extrabold text-2xl tracking-tight bg-gradient-to-r from-zinc-900 to-zinc-600 bg-clip-text text-transparent">
-            MCQ <span className="text-orange-groq font-black">Finder</span>
-          </span>
+        <div className="flex items-center space-x-8">
+          <Link href="/" className="flex items-center space-x-3 cursor-pointer group">
+            <motion.div 
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              className="w-10 h-10 rounded-xl bg-gradient-to-tr from-orange-groq to-amber-500 flex items-center justify-center shadow-md shadow-orange-groq/20 border border-orange-500/20"
+            >
+              <Sparkles className="w-4.5 h-4.5 text-white animate-pulse" />
+            </motion.div>
+            <span className="font-outfit font-extrabold text-2xl tracking-tight bg-gradient-to-r from-zinc-900 to-zinc-600 bg-clip-text text-transparent">
+              MCQ <span className="text-orange-groq font-black">Finder</span>
+            </span>
+          </Link>
+
+          <nav className="hidden md:flex items-center space-x-1">
+            <Link 
+              href="/" 
+              className="text-sm font-semibold font-outfit text-orange-groq px-3.5 py-2 rounded-xl bg-orange-groq/5 border border-orange-groq/10"
+            >
+              Search
+            </Link>
+            <Link 
+              href="/subjects" 
+              className="text-sm font-semibold font-outfit text-zinc-500 hover:text-zinc-800 px-3.5 py-2 rounded-xl hover:bg-zinc-100 transition-all duration-200"
+            >
+              Question Banks
+            </Link>
+          </nav>
         </div>
 
         {/* Database Status Indicator */}

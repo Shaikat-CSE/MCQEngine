@@ -63,6 +63,32 @@ class MCQResponse(BaseModel):
     difficulty: Optional[str]
     score: float
 
+class MCQDetailResponse(BaseModel):
+    id: int
+    subject_id: int
+    question: str
+    option_a: str
+    option_b: str
+    option_c: str
+    option_d: str
+    correct_answer: str
+    category: Optional[str]
+    topic: Optional[str]
+    difficulty: Optional[str]
+    created_at: datetime
+
+    class Config:
+        from_attributes = True
+
+class PaginatedMCQResponse(BaseModel):
+    total: int
+    page: int
+    page_size: int
+    pages: int
+    results: List[MCQDetailResponse]
+    categories: List[str]
+    topics: List[str]
+
 class SubjectResponse(BaseModel):
     id: int
     name: str
@@ -72,6 +98,7 @@ class SubjectResponse(BaseModel):
 
     class Config:
         from_attributes = True
+
 
 # API Endpoints
 @app.get("/")
@@ -120,3 +147,64 @@ def get_status(db: Session = Depends(get_db)):
         "total_mcqs": mcq_count,
         "data_directory": settings.DATA_DIR
     }
+
+@app.get("/api/subjects/{subject_id}", response_model=SubjectResponse)
+def get_subject(subject_id: int, db: Session = Depends(get_db)):
+    sub = db.query(Subject).filter(Subject.id == subject_id).first()
+    if not sub:
+        raise HTTPException(status_code=404, detail="Subject not found")
+    count = db.query(MCQ).filter(MCQ.subject_id == sub.id).count()
+    return SubjectResponse(
+        id=sub.id,
+        name=sub.name,
+        file_name=sub.file_name,
+        question_count=count,
+        created_at=sub.created_at
+    )
+
+@app.get("/api/subjects/{subject_id}/mcqs", response_model=PaginatedMCQResponse)
+def get_subject_mcqs(
+    subject_id: int,
+    page: int = Query(1, ge=1),
+    page_size: int = Query(20, ge=1, le=100),
+    category: Optional[str] = None,
+    topic: Optional[str] = None,
+    difficulty: Optional[str] = None,
+    search: Optional[str] = None,
+    db: Session = Depends(get_db)
+):
+    subject = db.query(Subject).filter(Subject.id == subject_id).first()
+    if not subject:
+        raise HTTPException(status_code=404, detail="Subject not found")
+
+    query = db.query(MCQ).filter(MCQ.subject_id == subject_id)
+
+    if category:
+        query = query.filter(MCQ.category == category)
+    if topic:
+        query = query.filter(MCQ.topic == topic)
+    if difficulty:
+        query = query.filter(MCQ.difficulty == difficulty)
+    if search:
+        query = query.filter(MCQ.question.ilike(f"%{search}%"))
+
+    total = query.count()
+    results = query.offset((page - 1) * page_size).limit(page_size).all()
+
+    # Get distinct categories and topics for this subject (for filtering)
+    categories = [c[0] for c in db.query(MCQ.category).filter(MCQ.subject_id == subject_id).distinct().all() if c[0]]
+    topics = [t[0] for t in db.query(MCQ.topic).filter(MCQ.subject_id == subject_id).distinct().all() if t[0]]
+
+    categories.sort()
+    topics.sort()
+
+    return {
+        "total": total,
+        "page": page,
+        "page_size": page_size,
+        "pages": (total + page_size - 1) // page_size,
+        "results": results,
+        "categories": categories,
+        "topics": topics
+    }
+
