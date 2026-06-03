@@ -18,7 +18,8 @@ import {
   Cpu,
   Layers,
   BarChart2,
-  Bookmark
+  Bookmark,
+  ExternalLink
 } from "lucide-react";
 
 interface Subject {
@@ -766,8 +767,16 @@ export default function Home() {
             <HelpCircle className="w-3.5 h-3.5 text-zinc-400" /> 
             <span>Protip: Press <kbd className="keycap px-1.5 py-0.5 rounded text-[9px] text-zinc-600 font-bold select-none">/</kbd> to search or <kbd className="keycap px-1.5 py-0.5 rounded text-[9px] text-zinc-600 font-bold select-none">Esc</kbd> to exit.</span>
           </p>
-          <p className="mt-2 text-zinc-500 font-inter text-[10px] font-medium">
-            MCQ Finder Engine © 2026. Made with Next.js and FastAPI.
+          <p className="mt-2 text-zinc-500 font-inter text-[10px] font-medium flex items-center justify-center gap-1 select-none">
+            <span>MCQ Finder Engine © 2026. Developed by</span>
+            <a 
+              href="https://codemybd.com" 
+              target="_blank" 
+              rel="noopener noreferrer" 
+              className="text-orange-groq hover:underline font-bold inline-flex items-center gap-0.5"
+            >
+              Codemy Technologies <ExternalLink className="w-2.5 h-2.5" />
+            </a>
           </p>
         </div>
 

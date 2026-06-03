@@ -187,3 +187,9 @@ Open [http://localhost:3000](http://localhost:3000) in your browser.
 *   **Endpoint**: `/api/status`
 *   **Method**: `GET`
 *   **Response**: Returns count statistics of active database data.
+
+---
+
+## 👥 Credits
+Developed with ❤️ by **Codemy Technologies** ([codemybd.com](https://codemybd.com)).
+
