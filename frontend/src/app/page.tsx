@@ -41,7 +41,9 @@ interface MCQ {
   score: number;
 }
 
-const API_BASE = process.env.NEXT_PUBLIC_API_URL || "http://127.0.0.1:8000";
+const API_BASE = typeof process.env.NEXT_PUBLIC_API_URL !== "undefined" 
+  ? process.env.NEXT_PUBLIC_API_URL 
+  : "http://127.0.0.1:8000";
 
 export default function Home() {
   // State
