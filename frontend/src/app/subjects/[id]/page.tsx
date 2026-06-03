@@ -242,52 +242,52 @@ export default function SubjectDetailPage({ params }: { params: Promise<{ id: st
       <div className="absolute bottom-0 left-0 right-0 h-[300px] radial-glow-bottom pointer-events-none -z-10" />
 
       {/* Top Header Navigation */}
-      <header className="w-full py-5 px-8 flex justify-between items-center max-w-7xl mx-auto border-b border-zinc-200/60 backdrop-blur-md sticky top-0 z-40 bg-[#fafafa]/80 transition-all duration-300">
-        <div className="flex items-center space-x-8">
-          <Link href="/" className="flex items-center space-x-3 cursor-pointer group select-none">
+      <header className="w-full py-4 md:py-5 px-4 md:px-8 flex justify-between items-center max-w-7xl mx-auto border-b border-zinc-200/60 backdrop-blur-md sticky top-0 z-40 bg-[#fafafa]/80 transition-all duration-300">
+        <div className="flex items-center space-x-3 md:space-x-8">
+          <Link href="/" className="flex items-center space-x-2.5 cursor-pointer group select-none">
             <motion.div 
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
-              className="w-10 h-10 rounded-xl bg-gradient-to-tr from-orange-groq to-amber-500 flex items-center justify-center shadow-md shadow-orange-groq/20 border border-orange-500/20"
+              className="w-9 h-9 md:w-10 md:h-10 rounded-xl bg-gradient-to-tr from-orange-groq to-amber-500 flex items-center justify-center shadow-md shadow-orange-groq/20 border border-orange-500/20"
             >
-              <Sparkles className="w-4.5 h-4.5 text-white" />
+              <Sparkles className="w-4 h-4 md:w-4.5 md:h-4.5 text-white" />
             </motion.div>
-            <span className="font-outfit font-extrabold text-2xl tracking-tight bg-gradient-to-r from-zinc-900 to-zinc-600 bg-clip-text text-transparent">
+            <span className="font-outfit font-extrabold text-lg md:text-2xl tracking-tight bg-gradient-to-r from-zinc-900 to-zinc-600 bg-clip-text text-transparent">
               MCQ <span className="text-orange-groq font-black">Finder</span>
             </span>
           </Link>
 
-          <nav className="hidden md:flex items-center space-x-1 select-none">
+          <nav className="flex items-center space-x-1 select-none">
             <Link 
               href="/" 
-              className="text-sm font-semibold font-outfit text-zinc-500 hover:text-zinc-800 px-3.5 py-2 rounded-xl hover:bg-zinc-100 transition-all duration-200"
+              className="text-xs md:text-sm font-semibold font-outfit text-zinc-500 hover:text-zinc-800 px-2.5 py-1.5 md:px-3.5 md:py-2 rounded-xl hover:bg-zinc-100 transition-all duration-200"
             >
               Search
             </Link>
             <Link 
               href="/subjects" 
-              className="text-sm font-semibold font-outfit text-orange-groq px-3.5 py-2 rounded-xl bg-orange-groq/5 border border-orange-groq/10"
+              className="text-xs md:text-sm font-semibold font-outfit text-orange-groq px-2.5 py-1.5 md:px-3.5 md:py-2 rounded-xl bg-orange-groq/5 border border-orange-groq/10"
             >
-              Question Banks
+              <span className="hidden sm:inline">Question </span>Banks
             </Link>
           </nav>
         </div>
 
         {/* Database Status Indicator */}
-        <div className="flex items-center space-x-4 select-none">
+        <div className="flex items-center space-x-2 md:space-x-4 select-none">
           <AnimatePresence mode="wait">
             {backendStatus ? (
               backendStatus.connected ? (
                 <motion.div 
                   initial={{ opacity: 0, scale: 0.9 }}
                   animate={{ opacity: 1, scale: 1 }}
-                  className="flex items-center space-x-2 bg-emerald-500/10 px-3.5 py-1.5 rounded-full border border-emerald-500/20 shadow-sm"
+                  className="flex items-center space-x-1.5 md:space-x-2 bg-emerald-500/10 px-2.5 py-1 md:px-3.5 md:py-1.5 rounded-full border border-emerald-500/20 shadow-sm"
                 >
-                  <div className="w-2 h-2 rounded-full bg-emerald-500 relative flex items-center justify-center">
-                    <span className="absolute w-2 h-2 rounded-full bg-emerald-400 animate-ping" />
+                  <div className="w-1.5 h-1.5 md:w-2 md:h-2 rounded-full bg-emerald-500 relative flex items-center justify-center">
+                    <span className="absolute w-1.5 h-1.5 md:w-2 md:h-2 rounded-full bg-emerald-400 animate-ping" />
                   </div>
-                  <span className="text-xs text-emerald-700 font-bold uppercase tracking-wider font-outfit">
-                    Active • {backendStatus.totalMcqs.toLocaleString()} MCQs
+                  <span className="text-[10px] md:text-xs text-emerald-700 font-bold uppercase tracking-wider font-outfit">
+                    <span className="hidden sm:inline">Active • </span>{backendStatus.totalMcqs.toLocaleString()} MCQs
                   </span>
                 </motion.div>
               ) : (
@@ -745,10 +745,10 @@ export default function SubjectDetailPage({ params }: { params: Promise<{ id: st
                 }
               }}
               disabled={page === 1}
-              className="flex items-center gap-1.5 px-4 py-2.5 rounded-2xl border border-zinc-200/80 hover:border-zinc-300 disabled:opacity-40 disabled:hover:border-zinc-200/80 text-zinc-600 text-xs font-bold font-outfit transition-all cursor-pointer disabled:cursor-not-allowed"
+              className="flex items-center gap-1.5 px-3 py-2 md:px-4 md:py-2.5 rounded-2xl border border-zinc-200/80 hover:border-zinc-300 disabled:opacity-40 disabled:hover:border-zinc-200/80 text-zinc-600 text-xs font-bold font-outfit transition-all cursor-pointer disabled:cursor-not-allowed"
             >
               <ChevronLeft className="w-4 h-4" />
-              Previous
+              <span className="hidden sm:inline">Previous</span>
             </button>
 
             <span className="text-xs text-zinc-500 font-bold font-outfit">
@@ -763,9 +763,9 @@ export default function SubjectDetailPage({ params }: { params: Promise<{ id: st
                 }
               }}
               disabled={page === totalPages}
-              className="flex items-center gap-1.5 px-4 py-2.5 rounded-2xl border border-zinc-200/80 hover:border-zinc-300 disabled:opacity-40 disabled:hover:border-zinc-200/80 text-zinc-600 text-xs font-bold font-outfit transition-all cursor-pointer disabled:cursor-not-allowed"
+              className="flex items-center gap-1.5 px-3 py-2 md:px-4 md:py-2.5 rounded-2xl border border-zinc-200/80 hover:border-zinc-300 disabled:opacity-40 disabled:hover:border-zinc-200/80 text-zinc-600 text-xs font-bold font-outfit transition-all cursor-pointer disabled:cursor-not-allowed"
             >
-              Next
+              <span className="hidden sm:inline">Next</span>
               <ChevronRight className="w-4 h-4" />
             </button>
           </div>
