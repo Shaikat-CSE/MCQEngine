@@ -1,0 +1,79 @@
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Inter:wght@300;400;500;600;700&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --color-orange-groq: #ff5e00;
+  --color-orange-glow: rgba(255, 94, 0, 0.05);
+  --color-bg-dark: #fafafa;
+  --color-card-dark: #ffffff;
+  --color-border-dark: #e4e4e7;
+  --color-text-dim: #71717a;
+  --font-outfit: "Outfit", sans-serif;
+  --font-inter: "Inter", sans-serif;
+}
+
+:root {
+  background-color: #fafafa;
+  color: #18181b;
+}
+
+body {
+  font-family: "Inter", sans-serif;
+  background-color: #fafafa;
+  color: #18181b;
+  overflow-x: hidden;
+  min-height: 100vh;
+}
+
+/* Glassmorphism card utility - Light Mode */
+.glass-card {
+  background: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.02);
+}
+
+.glass-card-hover:hover {
+  background: rgba(255, 255, 255, 0.95);
+  border-color: rgba(255, 94, 0, 0.25);
+  box-shadow: 0 8px 30px rgba(255, 94, 0, 0.05);
+}
+
+/* Glow for correct answer cards - Light Mode */
+.correct-glow {
+  border-color: #ff5e00;
+  box-shadow: 0 10px 30px rgba(255, 94, 0, 0.06), inset 0 0 0 1px rgba(255, 94, 0, 0.02);
+}
+
+/* Subtle background radial lighting - Light Mode */
+.radial-glow {
+  background: radial-gradient(circle at 50% -20%, rgba(255, 94, 0, 0.05) 0%, rgba(250, 250, 250, 0) 50%);
+}
+
+.radial-glow-bottom {
+  background: radial-gradient(circle at 50% 120%, rgba(255, 94, 0, 0.02) 0%, rgba(250, 250, 250, 0) 40%);
+}
+
+.grid-bg {
+  background-image: radial-gradient(rgba(0, 0, 0, 0.015) 1px, transparent 1px);
+  background-size: 32px 32px;
+}
+
+/* Custom scrollbars */
+::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #e4e4e7;
+  border-radius: 9999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #ff5e00;
+}
