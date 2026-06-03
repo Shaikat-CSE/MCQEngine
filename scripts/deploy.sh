@@ -83,8 +83,9 @@ if ! dpkg -s python3-venv &>/dev/null; then
     apt-get update && apt-get install -y python3-venv python3-pip
 fi
 
-if [ ! -d "venv" ]; then
+if [ ! -f "venv/bin/activate" ]; then
     log "Creating virtual environment..."
+    rm -rf venv
     python3 -m venv venv
 fi
 source venv/bin/activate
