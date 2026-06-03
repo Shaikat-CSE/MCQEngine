@@ -162,6 +162,7 @@ def scan_data_directory():
                 print(f"Successfully imported '{sub.name}' from {file} with {len(sub.mcqs)} MCQs.")
                 imported_subjects.append(sub.name)
             except Exception as e:
+                db.rollback()
                 print(f"Error importing {file}: {str(e)}")
                 
         # Clean up database subjects whose Excel files were deleted
