@@ -1,5 +1,6 @@
 import os
 import re
+import time
 import pandas as pd
 from datetime import datetime, timezone
 from sqlalchemy.orm import Session
@@ -86,7 +87,6 @@ def import_excel_file(db: Session, filepath: str, filename: str) -> Subject:
     if subject:
         # Delete existing MCQs and Subject to reload
         db.delete(subject)
-        db.commit()
         
     subject = Subject(
         name=subject_name,
@@ -94,8 +94,7 @@ def import_excel_file(db: Session, filepath: str, filename: str) -> Subject:
         last_modified_at=mtime
     )
     db.add(subject)
-    db.commit()
-    db.refresh(subject)
+    db.flush()
     
     mcq_objects = []
     for _, row in df.iterrows():
@@ -141,6 +140,25 @@ def scan_data_directory():
         print(f"Created data directory at: {settings.DATA_DIR}")
         return
         
+    # File lock to prevent concurrent scanner execution across worker processes
+    lock_path = os.path.join(settings.DATA_DIR, ".import.lock")
+    if os.path.exists(lock_path):
+        try:
+            mtime = os.path.getmtime(lock_path)
+            # If the lock file is less than 5 minutes old, skip this run to avoid race conditions
+            if time.time() - mtime < 300:
+                return
+        except Exception:
+            pass
+            
+    # Create the lock file
+    try:
+        with open(lock_path, "w") as f:
+            f.write(str(os.getpid()))
+    except Exception as e:
+        print(f"Failed to create lock file: {e}")
+        return
+        
     db = SessionLocal()
     try:
         files = [f for f in os.listdir(settings.DATA_DIR) if f.endswith('.xlsx') and not f.startswith('~$')]
@@ -166,12 +184,22 @@ def scan_data_directory():
                 print(f"Error importing {file}: {str(e)}")
                 
         # Clean up database subjects whose Excel files were deleted
-        db_subjects = db.query(Subject).all()
-        for sub in db_subjects:
-            if sub.file_name not in files:
-                print(f"Deleting subject '{sub.name}' as file {sub.file_name} was removed.")
-                db.delete(sub)
-                db.commit()
+        # Safety guard: if files list is empty, skip deletion check to prevent accidental database wipe in prod
+        if len(files) > 0:
+            db_subjects = db.query(Subject).all()
+            for sub in db_subjects:
+                if sub.file_name not in files:
+                    print(f"Deleting subject '{sub.name}' as file {sub.file_name} was removed.")
+                    db.delete(sub)
+                    db.commit()
+        else:
+            print("No Excel files found in data directory. Skipping cleanup to prevent accidental database purge.")
                 
     finally:
         db.close()
+        # Remove the lock file
+        try:
+            if os.path.exists(lock_path):
+                os.remove(lock_path)
+        except Exception as e:
+            print(f"Failed to remove lock file: {e}")

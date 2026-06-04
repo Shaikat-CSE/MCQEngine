@@ -31,7 +31,7 @@ async def watcher_loop():
             scan_data_directory()
         except Exception as e:
             print(f"Error in watcher loop: {e}")
-        await asyncio.sleep(5)
+        await asyncio.sleep(60)
 
 @app.on_event("startup")
 async def startup_event():
